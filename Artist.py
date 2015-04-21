@@ -2,18 +2,13 @@
 
 class Artist:
 	""" The class of artist """
-	def __init__(self, data, tagData):
+	def __init__(self, artistID, artistName):
 		"""Initialize the Artist object"""
-		self.ID = data[0]
-		self.Name = data[1]
+		#tagData is the tags.dat file
+		self.ID = artistID
+		self.Name = artistName
 		self.Tag = {}
-		for tagItem in tagData:
-			if tagItem[1] == self.ID:
-				tagId = tagItem[2]
-				if self.Tag.has_key(tagId):
-					self.Tag[tagId] += 1
-				else:
-					self.Tag[tagId] = 1
+		
 
 	def __repr__(self):
 		ret = "Artiest: " + self.ID + "\t"
@@ -23,8 +18,16 @@ class Artist:
 		return ret
 
 	def __str__(self):
+		"""convert the object to string"""
 		ret = "Artiest: " + self.ID + "\t"
 		ret = ret + self.Name + "\n"
 		ret = ret + str(self.Tag)
 
 		return ret
+
+	def insertTag(self, tagID):
+		"""insert a tag in Tag"""
+		if self.Tag.has_key(tagID):
+			self.Tag[tagID] += 1
+		else:
+			self.Tag[tagID] = 1
