@@ -22,8 +22,8 @@ class KNN:
 		artists = user.ArtistList
 		feature = {}
 		for artistID, listenTimes in artists.iteritems():
-			print artistID
-			print artistManager[artistID]
+			# print artistID
+			# print artistManager[artistID]
 			taginfo = artistManager[artistID].TagNormalized
 			
 			for tagID,weight in taginfo.iteritems():

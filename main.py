@@ -25,22 +25,28 @@ def splitTrainSet(userManager, percentage):
 	"""split the train set by percentage, to """
 	testUserIDList = random.sample(userManager, int(len(userManager)*percentage))
 	testUserMostFavourite = {}
+	testUserSet = {}
 	for userID in testUserIDList:
-		artists = userManager[userID].ArtistList
+		testUser = userManager.pop(userID)
+		testUserSet[userID] = testUser
+		artists = testUser.ArtistList
 		mostFavourite = {-1:0}
 		for artistID, listenTime in artists.iteritems():
 			if listenTime > mostFavourite.values()[0]:
 				mostFavourite = {artistID: listenTime}
 		testUserMostFavourite[userID] = mostFavourite
-		del userManager[userID].ArtistList[mostFavourite.keys()[0]]
+		del testUser.ArtistList[mostFavourite.keys()[0]]
+		testUserSet[userID] = testUser
+		
 
-	return testUserIDList, testUserMostFavourite
+	return testUserSet, testUserIDList, testUserMostFavourite
 
 
 
 
 if __name__ == "__main__":
-	filepath = "test-data/"
+	# filepath = "test-data/"
+	filepath = "hetrec2011-lastfm-2k/"
 	filelist = ["artists.dat", "tags.dat", "user_artists.dat", "user_friends.dat", "user_taggedartists.dat"]
 	data = readFile(filepath, filelist)
 
@@ -61,7 +67,7 @@ if __name__ == "__main__":
 		artist.tagNormalize()
 
 
-	print ArtistManager[3]
+	# print ArtistManager[3]
 
 	#create User Manager
 	UserManager = {}
@@ -89,13 +95,17 @@ if __name__ == "__main__":
 
 
 
-	print UserManager
-	testUserIDList, testUserMostFavourite = splitTrainSet(UserManager, 0.5)
+	# print UserManager
+	testUserSet, testUserIDList, testUserMostFavourite = splitTrainSet(UserManager, 0.001)
 	knn = KNN(2)
 	knn.training(UserManager, ArtistManager)
-	favOfOne = knn.testing(UserManager[testUserIDList[0]],UserManager, ArtistManager)
-	print UserManager
-	print favOfOne
+	for i in range(len(testUserIDList)):
+		favOfOne = knn.testing(testUserSet[testUserIDList[i]],UserManager, ArtistManager)
+		print testUserSet[testUserIDList[i]]
+		print testUserMostFavourite[testUserIDList[i]], favOfOne, testUserSet[testUserIDList[i]].ArtistList.pop(favOfOne, "cannot match any one")
+
+
+	# print favOfOne
 
 
 
