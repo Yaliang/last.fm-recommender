@@ -5,12 +5,12 @@ class User:
 	def __init__(self, userID):
 		"""Initialize the User object"""
 		self.ID = userID
-		self.ArtistList = {}
+		self.ArtistList = {} # key = artistID, value = listenTimes
 		self.FriendList = []
 		self.TagList = {}
 
 	def __repr__(self):
-		ret = "User: " + self.ID + "\n"
+		ret = "User: " + str(self.ID) + "\n"
 		ret = ret + "ArtistList: " + str(self.ArtistList) + "\n"  
 		ret = ret + "FriendList: " + str(self.FriendList) + "\n"
 		ret = ret + "TagList: " + str(self.TagList) + "\n"
@@ -19,7 +19,7 @@ class User:
 
 	def __str__(self):
 		"""convert the object to string"""
-		ret = "User: " + self.ID + "\n"
+		ret = "User: " + str(self.ID) + "\n"
 		ret = ret + "ArtistList: " + str(self.ArtistList) + "\n"  
 		ret = ret + "FriendList: " + str(self.FriendList) + "\n"
 		ret = ret + "TagList: " + str(self.TagList) + "\n"
@@ -41,7 +41,6 @@ class User:
 			self.TagList[artistID].append(tagID)
 		else:
 			self.TagList[artistID] = [tagID]
-
 
 
 
