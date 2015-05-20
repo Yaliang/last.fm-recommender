@@ -27,11 +27,12 @@ class Artist:
 		return ret
 
 	def insertTag(self, tagID):
-		"""insert a tag in Tag"""
-		if self.Tag.has_key(tagID):
-			self.Tag[tagID] += 1
-		else:
-			self.Tag[tagID] = 1
+		# """insert a tag in Tag"""
+		# if self.Tag.has_key(tagID):
+		# 	self.Tag[tagID] += 1
+		# else:
+		# 	self.Tag[tagID] = 1
+		self.Tag[tagID] = tagCount
 
 	def tagNormalize(self):
 		"""to normalize the times of tags appears"""
