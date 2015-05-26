@@ -47,21 +47,21 @@ def splitTrainSet(userManager, percentage):
 if __name__ == "__main__":
 	# filepath = "test-data/"
 	filepath = "hetrec2011-lastfm-2k/"
-	filelist = ["Artist.data", "ArtistTags.data", "UserArtist.data", "Tag.data", "UserFriend.data","TestUser.data","User.data"]
+	filelist = ["artists.dat", "tags.dat", "user_artists.dat", "user_friends.dat", "user_taggedartists.dat"]
 	data = readFile(filepath, filelist)
 
 	#create Artist Manager
 	ArtistManager = {}
 	for artist in data[0]:
-		# data[0]: artists.data
-		# artist = [id	name]
+		# data[0]: artists.dat
+		# artist = [id	name  url	pictureURL]
 		ArtistManager[int(artist[0])] = Artist(int(artist[0]),artist[1])
 
-	for tag in data[1]:
-		# data[1]: ArtistTags.data
-		# artisttag = [artistID	tagID tagCounts]
-		if ArtistManager.has_key(int(tag[0])):
-			ArtistManager[int(tag[0])].insertTag(int(tag[1]), int(tag[2]))
+	for tag in data[4]:
+		# data[4]: user_taggedartists.dat
+		# tag = [userID	artistID	tagID	day	month	year]
+		if ArtistManager.has_key(int(tag[1])):
+			ArtistManager[int(tag[1])].insertTag(int(tag[2]))
 
 	for artistID, artist in ArtistManager.iteritems():
 		artist.tagNormalize()
@@ -72,34 +72,26 @@ if __name__ == "__main__":
 	#create User Manager
 	UserManager = {}
 	for user in data[2]:
-		# data[2]: UserArtists.data
-		# user = [userID	artistID	count]
+		# data[2]: user_artists.dat
+		# user = [userID	artistID	weight]
 		if not UserManager.has_key(int(user[0])):
 			UserManager[int(user[0])] = User(int(user[0]))
 			
 		UserManager[int(user[0])].insertArt(int(user[1]),int(user[2]))
-	
-	TestUserManager = {}
-	for user in data[5]:
-		#data[5]: TestUser.data
-		#user = [userID	artistID count]
-		if not UserManager.has_key(int(user[0])):
-			UserManager[int(user[0])] = User(int(user[0]))
 			
-		UserManager[int(user[0])].insertArt(int(user[1]),int(user[2]))
 
 
-	for friend in data[4]:
-		# data[3]: UserFriends.data
+	for friend in data[3]:
+		# data[3]: user_friends.dat
 		# friend = [userID	friendID]
 		if UserManager.has_key(int(friend[0])):
 			UserManager[int(friend[0])].insertFriend(int(friend[1]))
 
-	# for tag in data[4]:		
-	# 	# data[4]: user_taggedartists.dat 
-	# 	# tag = [userID	artistID	tagID	day	month	year]
-	# 	if UserManager.has_key(int(tag[0])):
-	# 		UserManager[int(tag[0])].insertTag(int(tag[1]),int(tag[2]))
+	for tag in data[4]:		
+		# data[4]: user_taggedartists.dat 
+		# tag = [userID	artistID	tagID	day	month	year]
+		if UserManager.has_key(int(tag[0])):
+			UserManager[int(tag[0])].insertTag(int(tag[1]),int(tag[2]))
 
 
 
