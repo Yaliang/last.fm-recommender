@@ -2,6 +2,7 @@ from Artist import *
 from User import *
 from KNN import *
 import random
+import time
 
 def readFile(filepath, filelist):
 	""" read the data file from the filepath/filename """
@@ -21,9 +22,10 @@ def readFile(filepath, filelist):
 
 	return data
 
-def splitTrainSet(userManager, percentage):
+def splitTrainSet(userManager, testUserID):
 	"""split the train set by percentage, to """
-	testUserIDList = random.sample(userManager, int(len(userManager)*percentage))
+	#testUserIDList = random.sample(userManager, int(len(userManager)*percentage))
+	testUserIDList = [testUserID]
 	testUserMostFavourite = {}
 	testUserSet = {}
 	for userID in testUserIDList:
@@ -37,6 +39,7 @@ def splitTrainSet(userManager, percentage):
 		testUserMostFavourite[userID] = mostFavourite
 		del testUser.ArtistList[mostFavourite.keys()[0]]
 		testUserSet[userID] = testUser
+		# UserManager[userID] = testUser
 		
 
 	return testUserSet, testUserIDList, testUserMostFavourite
@@ -96,14 +99,31 @@ if __name__ == "__main__":
 
 
 	# print UserManager
-	testUserSet, testUserIDList, testUserMostFavourite = splitTrainSet(UserManager, 0.001)
-	knn = KNN(2)
-	knn.training(UserManager, ArtistManager)
-	for i in range(len(testUserIDList)):
-		favOfOne = knn.testing(testUserSet[testUserIDList[i]],UserManager, ArtistManager)
-		print testUserSet[testUserIDList[i]]
-		print testUserMostFavourite[testUserIDList[i]], favOfOne, testUserSet[testUserIDList[i]].ArtistList.pop(favOfOne, "cannot match any one")
+	theSameNum = 0
+	inListenNum = 0
+	users = UserManager.keys()
+	for user in users:
+		testUserSet, testUserIDList, testUserMostFavourite = splitTrainSet(UserManager, user)
+		knn = KNN(2)
+		knn.training(UserManager, ArtistManager)
+		
+		for i in range(len(testUserIDList)):
+			favOfOne = knn.testing(testUserSet[testUserIDList[i]],UserManager, ArtistManager)
+			if favOfOne == testUserMostFavourite[testUserIDList[i]].keys()[0]:
+				theSameNum += 1
+			if testUserSet[testUserIDList[i]].ArtistList.has_key(favOfOne):
+				inListenNum += 1
+			UserManager[testUserIDList[i]]=testUserSet[testUserIDList[i]]
+			key = testUserMostFavourite[testUserIDList[i]].keys()[0]
+			value = testUserMostFavourite[testUserIDList[i]].values()[0]
+			UserManager[testUserIDList[i]].insertArt(key,value)
 
+			# print testUserSet[testUserIDList[i]]
+			# print testUserMostFavourite[testUserIDList[i]], favOfOne, testUserSet[testUserIDList[i]].ArtistList.pop(favOfOne, "cannot match any one")
+		print str(user)
+
+	print theSameNum/len(UserManager)
+	print inListenNum/len(UserManager)
 
 	# print favOfOne
 
