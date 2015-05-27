@@ -42,6 +42,17 @@ class User:
 		else:
 			self.TagList[artistID] = [tagID]
 
+	def normalizeListenRecord(self):
+		"""normalize the count of listening record"""
+		artistIDs = self.ArtistList.keys()
+		self.totalListenTime = 0
+		for artistID in artistIDs:
+			self.totalListenTime += self.ArtistList[artistID]
+		for artistID in artistIDs:
+			self.ArtistList[artistID] = float(self.ArtistList[artistID]) / self.totalListenTime
+
+
+
 
 
 

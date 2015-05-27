@@ -53,7 +53,7 @@ class KNN:
 		# nodes in knn:
 		# key: nodeID, value: distance between node and testUser
 		# knn is ordered by ascending distance 
-		knn = [{-1: 1} for i in range(self.K)]
+		knn = [{-1: float("Inf")} for i in range(self.K)]
 		
 		for userID, feature in self.Nodes.iteritems(): 
 			# calculate the distance between node and testUser

@@ -22,10 +22,12 @@ def readFile(filepath, filelist):
 
 	return data
 
-def splitTrainSet(userManager, testUserID):
+def splitTrainSet(userManager, percentage, userList = []):
 	"""split the train set by percentage, to """
-	#testUserIDList = random.sample(userManager, int(len(userManager)*percentage))
-	testUserIDList = [testUserID]
+	if len(userList) == 0:
+		testUserIDList = random.sample(userManager, int(len(userManager)*percentage))
+	else:
+		testUserIDList = userList
 	testUserMostFavourite = {}
 	testUserSet = {}
 	for userID in testUserIDList:
@@ -44,7 +46,32 @@ def splitTrainSet(userManager, testUserID):
 
 	return testUserSet, testUserIDList, testUserMostFavourite
 
-
+def crossvalidation(userManager, artistManager, folders):
+	"""split data into folders and validate the performance"""
+	userIDs = userManager.keys()
+	userFolders = {}
+	for i in range(folders):
+		userFolders[i] = []
+	for userID in userIDs:
+		i = random.randrange(folders)
+		userFolders[i].append(userID)
+	for f in range(folders):
+		testUserSet, testUserIDList, testUserMostFavourite = splitTrainSet(userManager, 1.0/folders, userFolders[f])
+		knn = KNN(6)
+		knn.training(userManager, artistManager)
+		rightNum = 0
+		totalNum = len(testUserIDList)
+		for i in range(len(testUserIDList)):
+			print i, totalNum,
+			favOfOne = knn.testing(testUserSet[testUserIDList[i]], userManager, artistManager)
+			print testUserIDList[i], testUserMostFavourite[testUserIDList[i]].keys()[0], favOfOne
+			if favOfOne == testUserMostFavourite[testUserIDList[i]].keys()[0]:
+				rightNum += 1
+		print "Folder", f, ":"
+		print "Total:", totalNum
+		print float(rightNum)/len(testUserIDList)
+		for i in range(len(testUserIDList)):
+			userManager[testUserIDList[i]] = testUserSet[testUserIDList[i]]
 
 
 if __name__ == "__main__":
@@ -96,6 +123,10 @@ if __name__ == "__main__":
 		if UserManager.has_key(int(tag[0])):
 			UserManager[int(tag[0])].insertTag(int(tag[1]),int(tag[2]))
 
+	# normalize the listen count
+	for userID, user in UserManager.iteritems():
+		user.normalizeListenRecord()
+
 
 
 	# print UserManager
@@ -103,7 +134,7 @@ if __name__ == "__main__":
 	inListenNum = 0
 	users = UserManager.keys()
 	for user in users:
-		testUserSet, testUserIDList, testUserMostFavourite = splitTrainSet(UserManager, user)
+		testUserSet, testUserIDList, testUserMostFavourite = splitTrainSet(UserManager, 0, [user])
 		knn = KNN(2)
 		knn.training(UserManager, ArtistManager)
 		
