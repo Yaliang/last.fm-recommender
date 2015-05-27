@@ -128,6 +128,9 @@ if __name__ == "__main__":
 		user.normalizeListenRecord()
 
 
+	# 10 cross validation
+	# crossvalidation(UserManager, ArtistManager, 10)
+
 
 	# print UserManager
 	theSameNum = 0
