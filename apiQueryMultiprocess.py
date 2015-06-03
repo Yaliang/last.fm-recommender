@@ -213,7 +213,7 @@ if __name__ == '__main__':
 	tagNames = groupTagList.keys()
 
 	# save Artist.data
-	f = open(os.path.dirname(os.path.realpath(__file__))+"\lastfm-API-data\Artist.data","w")
+	f = open(os.path.dirname(os.path.realpath(__file__))+"/lastfm-API-data/Artist.data","w")
 	output = "<ArtistID>\t<ArtistName>\n".encode('utf8')
 
 	for artistID in range(len(artistNames)):
@@ -222,7 +222,7 @@ if __name__ == '__main__':
 	f.close()
 
 	# save ArtistTags.data
-	f = open(os.path.dirname(os.path.realpath(__file__))+"\lastfm-API-data\ArtistTags.data","w")
+	f = open(os.path.dirname(os.path.realpath(__file__))+"/lastfm-API-data/ArtistTags.data","w")
 	output = "<ArtistID>\t<TagID>\t<Count>\n".encode('utf8')
 	for artistID in range(len(artistNames)):
 		artistName = artistNames[artistID]
@@ -237,7 +237,7 @@ if __name__ == '__main__':
 	f.close()
 
 	# save UserArtist.data
-	f = open(os.path.dirname(os.path.realpath(__file__))+"\lastfm-API-data\UserArtist.data","w")
+	f = open(os.path.dirname(os.path.realpath(__file__))+"/lastfm-API-data/UserArtist.data","w")
 	output = "<UserID>\t<ArtistID>\t<Count>\n".encode('utf8')
 	for userID in range(len(userNames)):
 		userName = userNames[userID]
@@ -255,7 +255,7 @@ if __name__ == '__main__':
 	f.close()
 
 	# save Tag.data
-	f = open(os.path.dirname(os.path.realpath(__file__))+"\lastfm-API-data\Tag.data","w")
+	f = open(os.path.dirname(os.path.realpath(__file__))+"/lastfm-API-data/Tag.data","w")
 	output = "<TagID>\t<TagName>\n".encode('utf8')
 	for tagID in range(len(tagNames)):
 		line = str(tagID)+"\t"+tagNames[tagID]+"\n"
@@ -265,7 +265,7 @@ if __name__ == '__main__':
 	f.close()
 
 	# save TestUser.data
-	f = open(os.path.dirname(os.path.realpath(__file__))+"\lastfm-API-data\TestUser.data","w")
+	f = open(os.path.dirname(os.path.realpath(__file__))+"/lastfm-API-data/TestUser.data","w")
 	output = "<UserID>\t<ArtistID>\t<Count>\n".encode('utf8')
 	for userID in range(len(userNames)):
 		userName = userNames[userID]
@@ -284,7 +284,7 @@ if __name__ == '__main__':
 	f.close()
 
 	# save User.data
-	f = open(os.path.dirname(os.path.realpath(__file__))+"\lastfm-API-data\User.data","w")
+	f = open(os.path.dirname(os.path.realpath(__file__))+"/lastfm-API-data/User.data","w")
 	output = "<UserID>\t<UserName>\n".encode('utf8')
 	for userID in range(len(userNames)):
 		line = str(userID)+"\t"+userNames[userID]+"\n"
