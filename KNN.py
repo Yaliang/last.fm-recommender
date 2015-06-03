@@ -43,7 +43,7 @@ class KNN:
 		return feature
 
 
-	def testing(self, testUser, userManager, artistManager):
+	def testing(self, testUser, userManager, artistManager, removeKnownArtist = False):
 		""" calculate the distance between test user and trained nodes
 			find out the k nearest neighbors
 			return ID of a best matched artist"""	
@@ -98,6 +98,14 @@ class KNN:
 					match[artistID] += GDistance*listenTime
 				else:
 					match[artistID] = GDistance*listenTime
+
+		# if we don't want to recommand an artist in the testuser's listen record
+		# just remove the artists in its match dictionary
+		testUserArts = testUser.ArtistList
+		if removeKnownArtist:
+			for artistID in testUserArts:
+				if match.has_key(artistID):
+					del match[artistID]
 
 		sortedMatch = sorted(match.items(), key=operator.itemgetter(1))
 		bestMatchArtistID = sortedMatch[-1][0]

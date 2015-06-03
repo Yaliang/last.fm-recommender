@@ -1,13 +1,15 @@
 #This is a class defination of the user in the dataset
+from copy import deepcopy
 
 class User:
 	"""The class of user"""
-	def __init__(self, userID):
+	def __init__(self, userID, artistList = {}, friendList = [], tagList = {}, totalListenTime = 0):
 		"""Initialize the User object"""
 		self.ID = userID
-		self.ArtistList = {} # key = artistID, value = listenTimes
-		self.FriendList = []
-		self.TagList = {}
+		self.ArtistList = deepcopy(artistList) # key = artistID, value = listenTimes
+		self.FriendList = deepcopy(friendList)
+		self.TagList = deepcopy(tagList)
+		self.totalListenTime = totalListenTime
 
 	def __repr__(self):
 		ret = "User: " + str(self.ID) + "\n"
@@ -51,7 +53,15 @@ class User:
 		for artistID in artistIDs:
 			self.ArtistList[artistID] = float(self.ArtistList[artistID]) / self.totalListenTime
 
+	def getMostFav(self):
+		"""return the most favorite artist"""
+		mostFavourite = {-1:0}
+		artists = self.ArtistList
+		for artistID, listenTime in artists.iteritems():
+			if listenTime > mostFavourite.values()[0]:
+				mostFavourite = {artistID: listenTime}
 
+		return mostFavourite
 
 
 
