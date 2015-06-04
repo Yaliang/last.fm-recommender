@@ -39,7 +39,7 @@ def splitTrainSet(userManager, percentage, userList = []):
 			if listenTime > mostFavourite.values()[0]:
 				mostFavourite = {artistID: listenTime}
 		testUserMostFavourite[userID] = mostFavourite
-		del testUser.ArtistList[mostFavourite.keys()[0]]
+		# del testUser.ArtistList[mostFavourite.keys()[0]]
 		testUserSet[userID] = testUser
 		# UserManager[userID] = testUser
 		
@@ -124,8 +124,8 @@ if __name__ == "__main__":
 			UserManager[int(tag[0])].insertTag(int(tag[1]),int(tag[2]))
 
 	# normalize the listen count
-	for userID, user in UserManager.iteritems():
-		user.normalizeListenRecord()
+	# for userID, user in UserManager.iteritems():
+	# 	user.normalizeListenRecord()
 
 
 	# 10 cross validation
@@ -150,7 +150,8 @@ if __name__ == "__main__":
 			UserManager[testUserIDList[i]]=testUserSet[testUserIDList[i]]
 			key = testUserMostFavourite[testUserIDList[i]].keys()[0]
 			value = testUserMostFavourite[testUserIDList[i]].values()[0]
-			UserManager[testUserIDList[i]].insertArt(key,value)
+			#UserManager[testUserIDList[i]].insertArt(key,value)
+			print testUserIDList[0], favOfOne, key
 
 			# print testUserSet[testUserIDList[i]]
 			# print testUserMostFavourite[testUserIDList[i]], favOfOne, testUserSet[testUserIDList[i]].ArtistList.pop(favOfOne, "cannot match any one")
