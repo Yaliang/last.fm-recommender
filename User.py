@@ -8,7 +8,7 @@ class User:
 		self.ID = userID
 		self.ArtistList = deepcopy(artistList) # key = artistID, value = listenTimes
 		self.FriendList = deepcopy(friendList)
-		self.TagList = deepcopy(tagList)
+		self.TagList = deepcopy(tagList)	
 		self.totalListenTime = totalListenTime
 
 	def __repr__(self):
