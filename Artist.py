@@ -9,7 +9,6 @@ class Artist:
 		self.Name = artistName
 		self.Tag = {}
 		self.TagNormalized = {}
-		
 
 	def __repr__(self):
 		ret = "Artiest: " + str(self.ID) + "\t"
@@ -44,6 +43,7 @@ class Artist:
 		self.TagNormalized = {}
 		for key, value in self.Tag.iteritems():
 			self.TagNormalized[key] = 1.0*value/totalTagNum
+
 
 
 
