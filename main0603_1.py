@@ -185,8 +185,8 @@ if __name__ == "__main__":
 			# print testUserMostFavourite[testUserIDList[i]], favOfOne, testUserSet[testUserIDList[i]].ArtistList.pop(favOfOne, "cannot match any one")
 			print str(user), theSameNum, inListenNum, favOfOne
 
-	print theSameNum/len(UserManager)
-	print inListenNum/len(UserManager)
+	print 1.0*theSameNum/len(UserManager)
+	print 1.0*inListenNum/len(UserManager)
 
 	# print favOfOne
 
