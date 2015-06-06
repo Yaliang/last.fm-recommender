@@ -1,5 +1,7 @@
 # Use K-Nearest Neighbor to train and classify.
 import math, operator
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 class KNN:
@@ -43,7 +45,7 @@ class KNN:
 		return feature
 
 
-	def testing(self, testUser, userManager, artistManager, removeKnownArtist = False):
+	def testing(self, testUser, userManager, artistManager, removeKnownArtist = False, animate = False):
 		""" calculate the distance between test user and trained nodes
 			find out the k nearest neighbors
 			return ID of a best matched artist"""	
@@ -81,14 +83,27 @@ class KNN:
 					break
 
 		match = {}
+		gd = [0]
+		mf = [0]
+		wig = [0]
+		dgr = [0]
+
+		disttt = []
+		for node in knn:
+			disttt.append(node.values()[0])
+		maxdistance = max(disttt)
+		maxGDistance = 1.0* math.exp(-maxdistance**2 / 0.004)
+		axislim = [-2*maxGDistance, 2*maxGDistance]
+
+
 		for node in knn:
 			# get userId
 			userID = node.keys()[0]
 			# get distance
 			distance = node.values()[0]
 			# G is a gaussian function: G(x) = a exp (- x^2 / (2 * c^2))
-			# use a = 1, c^2 = 0.2 
-			GDistance = 1.0* math.exp(-distance**2 / 0.4)
+			# use a = 1, c^2 = 0.004 
+			GDistance = 1.0* math.exp(-distance**2 / 0.004)
 			# get artist list of user with userId
 			user = userManager[userID]
 			artistList = user.ArtistList
@@ -98,6 +113,43 @@ class KNN:
 					match[artistID] += GDistance*listenTime
 				else:
 					match[artistID] = GDistance*listenTime
+			
+			if animate:
+				# if we don't want to recommand an artist in the testuser's listen record
+				# just remove the artists in its match dictionary
+				testUserArts = testUser.ArtistList
+				if removeKnownArtist:
+					for artistID in testUserArts:
+						if match.has_key(artistID):
+							del match[artistID]
+
+				sortedMatch = sorted(match.items(), key=operator.itemgetter(1))
+				bestMatchArtistID = sortedMatch[-1][0]
+
+				mf[0] = bestMatchArtistID
+				wig[0] = 3.14*match[bestMatchArtistID]
+
+
+				gd.append(GDistance)
+				favDic = userManager[userID].getMostFav()
+				favID = favDic.keys()[0]
+				mf.append(favID)
+				lt = userManager[userID].ArtistList[favID]
+				wig.append(lt)
+				dgr.append(np.random.rand()*np.pi*2 - np.pi) 
+				# plot 
+				di = np.array(gd)
+				degree = np.array(dgr)
+				x = np.sin(degree)*di
+				y = np.cos(degree)*di
+				labels = np.array(mf)
+				area = np.array(wig)**2
+				# save
+				fig = plt.scatter(x,y,s=10000*area, c=labels)
+				plt.axis('off')
+				plt.xlim(axislim)
+				plt.ylim(axislim)
+				plt.savefig(str(len(gd))+"plot.png")
 
 		# if we don't want to recommand an artist in the testuser's listen record
 		# just remove the artists in its match dictionary
@@ -110,7 +162,7 @@ class KNN:
 		sortedMatch = sorted(match.items(), key=operator.itemgetter(1))
 		bestMatchArtistID = sortedMatch[-1][0]
 
-		return bestMatchArtistID
+		return bestMatchArtistID, knn
 
 
 			
