@@ -167,8 +167,9 @@ Y = 0
 	
 if __name__ == "__main__":
 	print "Run Y = tsne.tsne(X, no_dims, perplexity) to perform t-SNE on your dataset."
-	print "Running example on 2,500 MNIST digits..."
-	X = Math.loadtxt("FeaturedUsersTag.txt");
-	labels = Math.loadtxt("UserLabel.txt");
-	Y = tsne(X, 2, 12649, 20.0);
-	Plot.scatter(Y[:,0], Y[:,1], 20, labels);
+	X = Math.loadtxt("NeighborFeaturedUsersTag.txt")
+	labels = Math.loadtxt("NeighborUserLabel.txt")
+	distances = Math.loadtxt("NeighborDistance.txt")
+	Y = tsne(X, 2, 12649, 20.0)
+	Plot.scatter(Y[:,0], Y[:,1], 20, labels, distances)
+	Plot.show()
