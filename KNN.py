@@ -166,8 +166,78 @@ class KNN:
 
 
 			
+	def testingTimeBased(self, testUser, userManager, artistManager):
+		""" calculate the distance between test user and trained nodes
+			find out the k nearest neighbors
+			return ID of a best matched artist"""	
+		#get the feature vector of current testUser
+		curFeature = self.Nodes[testUser.ID]
+
+		# nodes in knn:
+		# key: nodeID, value: distance between node and testUser
+		# knn is ordered by ascending distance 
+		knn = [{-1: float("Inf")} for i in range(self.K)]
+		
+		for userID, feature in self.Nodes.iteritems(): 
+			# calculate the distance between node and testUser
+			# distance use Euclidean distance
+
+			valid = userManager[userID].hasArtistInRecord(testUser.ArtistList.keys())
+			if not valid or testUser.ID == userID:
+				continue
+
+			distance = 0
+			for tagID, weight in curFeature.iteritems():
+				# combine feature of node and curfeature
+				if not feature.has_key(tagID):
+					feature[tagID] = -weight
+				else:
+					feature[tagID] -= weight
+
+			for tagID, weight in feature.iteritems():
+				distance += weight**2
+
+			distance = math.sqrt(distance)
+
+			for index in range(self.K-1, -1, -1):
+				# loop knn from self.K-1 to 1 
+				if knn[index].values()[0] > distance:
+					if index < self.K-1:
+						knn[index+1] = knn[index]
+					knn[index] = {userID: distance}
+				else:
+					break
+
+		match = {}
+		for artistID in testUser.ArtistList:
+			match[artistID] = 0
+
+		for node in knn:
+			# get userId
+			userID = node.keys()[0]
+			# get distance
+			distance = node.values()[0]
+			# G is a gaussian function: G(x) = a exp (- x^2 / (2 * c^2))
+			# use a = 1, c^2 = 0.004 
+			GDistance = 1.0* math.exp(-distance**2 / 0.004)
+			# get artist list of user with userId
+			user = userManager[userID]
+			artistList = user.ArtistList
+			# Matching(testuser-artist) = sum [G(distance(testuser-user)) * listenTime(user-artiest)]
+			for artistID, listenTime in artistList.iteritems():
+				if match.has_key(artistID):
+					match[artistID] += GDistance*listenTime
+				else:
+					continue
 
 
+		# if we don't want to recommand an artist in the testuser's listen record
+		# just remove the artists in its match dictionary
+
+		sortedMatch = sorted(match.items(), key=operator.itemgetter(1))
+		bestMatchArtistID = sortedMatch[-1][0]
+
+		return bestMatchArtistID, knn
 
 
 
