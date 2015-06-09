@@ -103,3 +103,26 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+.icon-refresh-animate {
+  animation-name: rotateThis;
+  animation-duration: .5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes rotateThis {
+  from { transform: scale( 1 ) rotate( 0deg );   }
+  to   { transform: scale( 1 ) rotate( 360deg ); }
+}
+
+.artist-option {
+  max-width: 140px; 
+  margin:auto; 
+  margin-top:20px
+}
+
+
+.slider-selection {
+  background: #BABABA!important;
+}

@@ -40,6 +40,7 @@
                                 <li class="active"><a href="#">Home</a></li>
                                 <li><a href="#about">About</a></li>
                                 <li><a href="#team">Team</a></li>
+                                <li><a href="./Dashboard.html">Dashboard</a></li>
                                 <li class="dropdown">
                                     <a href="http://getbootstrap.com/examples/carousel/#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">More <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
@@ -76,7 +77,7 @@
                     <div class="container">
                         <div class="carousel-caption">
                             <h1>Example headline.</h1>
-                            <p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.</p>
+                            <p>Playing with the same set of music, monotonely ,you get bored and lost. Come and click on our website, surprisely, you get new and refreshed. Our Streaming Media Recommender gives you, as well as other music fanciers, potentially favorite artists recommendation. With several simple clicks, your music library endlessly incresingly broadens.</p>
                             <p><a class="btn btn-lg btn-primary" href="http://getbootstrap.com/examples/carousel/#" role="button">Sign up today</a></p>
                         </div>
                     </div>
@@ -125,8 +126,8 @@
             <div id="about" class="row featurette">
                 <div class="col-md-7">
                     <h2 class="featurette-heading">Character computation. <span class="text-muted"></span></h2>
-                    <p class="lead">Learn your taste from your listen record in our tag feature space.</p>
-                    <p>Based on user's listen record, we compute the normalized weight on each tag in our tag feature space. The weight is computed from the sum of weighted counts of tags labeled on the listened artist.</p>
+                    <p class="lead">Learn your taste from your listen record in the tag feature space.</p>
+                    <p>We characterize users' tag attributes from their listen records. In the feature space, each dimension represents a tag attribute. The normalized value of attribute is an accumulative result for all listened artists who has the given tag. Each addend is the product of normalized tagged count and listening time of corresponding artist.</p>
                     <small>* This plot is adapted from high dimensional feature space to 2D space by using <a target="_blank" href="http://lvdmaaten.github.io/tsne/">t_SNE</a>.</small>
                 </div>
                 <div class="col-md-5">
@@ -139,7 +140,8 @@
             <div class="row featurette">
                 <div class="col-md-7 col-md-push-5">
                     <h2 class="featurette-heading">Capture your neighbors. <span class="text-muted"></span></h2>
-                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                    <p class="lead">K nearest neighbors are selected based on the Euler distance between you and other users in the feature space.</p>
+                    <small>* This animation shows a test user(ID:5) is finding 30 nearest neighbors. The test user become bigger at the center since collecting more records from neighbors. The value of distance in 2D space is equal to the value of Euler distance in high-dimensional feature space in this animation. The radius of a neighbor represents the relative size of total listen number.</small>
                 </div>
                 <div class="col-md-5 col-md-pull-7">
                     <img class="featurette-image img-responsive center-block" 
@@ -151,37 +153,49 @@
 
             <div class="row featurette">
                 <div class="col-md-7">
-                    <h2 class="featurette-heading">And lastly, guess your most favors. <span class="text-muted">Checkmate.</span></h2>
-                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                    <h2 class="featurette-heading">And lastly, guess your most favorite. <span class="text-muted"></span></h2>
+                    <p class="lead">The listened records of neighbors are weighted by the Gaussian function of distance in feature space. By combining K neighbors' weighted records, we recommend the top ranked artist out of your listened artists to you.</p>
+                    <small>* The plot compares the overall accuracy of predict most favorite with KNN under different parameter K. An accuracy of which recommending the most popular artist out of the listened artists, is given as the baseline of performance. Each user in the dataset is set as a test user by removing the most listened artist and using rest listen record to predict the most favorite artist. The overall matching rate of the predict and the actual most listened artist is treated as accuracy. The dataset of Last.FM is published at <a target="_blank"  href="http://grouplens.org/datasets/hetrec-2011/">HetRec-2011</a></small>
                 </div>
                 <div class="col-md-5">
-                    <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjE5MC4zMTI1IiB5PSIyNTAiIHN0eWxlPSJmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MjNwdDtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj41MDB4NTAwPC90ZXh0PjwvZz48L3N2Zz4=" data-holder-rendered="true">
+                    <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500" src="./front-end/img/accuracy.png" data-holder-rendered="true">
                 </div>
             </div>
 
             <hr class="featurette-divider">
 
+            <div class="row">
+                <div class="center-block"><a class="btn btn-lg btn-primary" href="./Dashboard.html" style="margin:auto; display:block; max-width:260px" role="button">Play on the Dashboard</a></div>
+            </div>
+
+
+            <hr id="team" class="featurette-divider">
+
+            <div class="row" style="margin-top:-40px; margin-bottom:40px">
+                <p class="text-center" style="font-size:20px; color: #A8A8A8;">Team</p>
+            </div>
+
             <!-- /END THE FEATURETTES -->
 
             <!-- Three columns of text below the carousel -->
-            <div id="team" class="row">
+            <div class="row">
                 <div class="col-lg-4">
-                    <img class="img-circle" src="./front-end/img/profile_yaliang.png" alt="Generic placeholder image" width="140" height="140">
-                    <h2>Yaliang Wang</h2>
-                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+                    <img class="img-circle" src="./front-end/img/profile_yaliang.png" alt="Generic placeholder image" width="100" height="100">
+                    <h3>Yaliang Wang</h3>
+                    <p>Master Student, Computer Science, Northwestern University, Class of 2015.</br>yaliangwang2015 [at] u.northwestern.edu</p>
                     <p><a class="btn btn-default" target="_blank" href="https://github.com/Yaliang" role="button">View on Github »</a></p>
                 </div>
                 <!-- /.col-lg-4 -->
                 <div class="col-lg-4">
-                    <img class="img-circle" src="./front-end/img/profile_haomin.png" alt="Generic placeholder image" width="140" height="140">
-                    <h2>Haomin Zeng</h2>
+                    <img class="img-circle" src="./front-end/img/profile_haomin.png" alt="Generic placeholder image" width="100" height="100">
+                    <h3>Haomin Zeng</h3>
                     <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
                     <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
                 </div>
                 <!-- /.col-lg-4 -->
                 <div class="col-lg-4">
-                    <img class="img-circle" src="./front-end/img/profile_sisi.png" alt="Generic placeholder image" width="140" height="140">
-                    <h2>Sisi Chen</h2>
+                    <img class="img-circle" src="./front-end/img/profile_sisi.png" alt="Generic placeholder image" width="100" height="100">
+                    <h3>Sisi Chen</h3>
                     <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
                     <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
                 </div>
@@ -203,6 +217,7 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="./lib/jquery-1.11.3.min.js"></script>
         <script src="./lib/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+        <script src="./lib/bootstrap-slider-master/js/bootstrap-slider.js"></script>
         <script src="./front-end/js/python-base.js"></script>
     </body>
 </html>
