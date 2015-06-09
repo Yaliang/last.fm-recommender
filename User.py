@@ -63,6 +63,12 @@ class User:
 
 		return mostFavourite
 
+	def hasArtistInRecord(self,artistList):
+		for artistID in artistList:
+			if self.ArtistList.has_key(artistID):
+				return True
+		return False
+
 
 
 
