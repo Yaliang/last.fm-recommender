@@ -58,8 +58,10 @@ body {
 
 .carousel-inner > .item > img {
     margin:auto;
+    min-width: 500px;
+    overflow: hidden;
     /*min-width: 100%;*/
-    height: 500px;
+    max-height: 500px;
 }
 /* MARKETING CONTENT
 -------------------------------------------------- */
