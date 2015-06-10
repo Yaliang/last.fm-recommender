@@ -39,12 +39,36 @@ def splitTrainSet(userManager, percentage, userList = []):
 			if listenTime > mostFavourite.values()[0]:
 				mostFavourite = {artistID: listenTime}
 		testUserMostFavourite[userID] = mostFavourite
-		# del testUser.ArtistList[mostFavourite.keys()[0]]
+		del testUser.ArtistList[mostFavourite.keys()[0]]
 		testUserSet[userID] = testUser
 		# UserManager[userID] = testUser
 		
 
 	return testUserSet, testUserIDList, testUserMostFavourite
+
+def splitTrainSetWithoutRemoving(userManager, percentage, userList = []):
+	"""split the train set by percentage, to """
+	if len(userList) == 0:
+		testUserIDList = random.sample(userManager, int(len(userManager)*percentage))
+	else:
+		testUserIDList = userList
+	testUserSet = {}
+	for userID in testUserIDList:
+		testUser = userManager.pop(userID)
+		testUserSet[userID] = testUser
+
+	return testUserSet, testUserIDList
+
+def removeMostFav(userManager):
+	newUserManager = {}
+	for userID in userManager:
+		user = userManager[userID]
+		newUser = User(userID, user.ArtistList, user.FriendList, user.TagList, user.totalListenTime)
+		mostFavourite = user.getMostFav()
+		del newUser.ArtistList[mostFavourite.keys()[0]]
+		newUserManager[userID] = newUser
+
+	return newUserManager
 
 def crossvalidation(userManager, artistManager, folders):
 	"""split data into folders and validate the performance"""
@@ -79,6 +103,7 @@ if __name__ == "__main__":
 	filepath = "hetrec2011-lastfm-2k/"
 	filelist = ["artists.dat", "tags.dat", "user_artists.dat", "user_friends.dat", "user_taggedartists.dat"]
 	data = readFile(filepath, filelist)
+	RemoveListened = True
 
 	#create Artist Manager
 	ArtistManager = {}
@@ -124,8 +149,11 @@ if __name__ == "__main__":
 			UserManager[int(tag[0])].insertTag(int(tag[1]),int(tag[2]))
 
 	# normalize the listen count
-	# for userID, user in UserManager.iteritems():
-	# 	user.normalizeListenRecord()
+	for userID, user in UserManager.iteritems():
+		user.normalizeListenRecord()
+
+	# remove most fav of all, return a new userManager for train
+	TrainUserManager = removeMostFav(UserManager)
 
 
 	# 10 cross validation
@@ -137,28 +165,28 @@ if __name__ == "__main__":
 	inListenNum = 0
 	users = UserManager.keys()
 	for user in users:
-		testUserSet, testUserIDList, testUserMostFavourite = splitTrainSet(UserManager, 0, [user])
+		# testUserSet, testUserIDList, testUserMostFavourite = splitTrainSet(UserManager, 0, [user])
+		testUserSet, testUserIDList = splitTrainSetWithoutRemoving(TrainUserManager, 0, [user])
 		knn = KNN(2)
-		knn.training(UserManager, ArtistManager)
+		knn.training(TrainUserManager, ArtistManager)
 		
 		for i in range(len(testUserIDList)):
-			favOfOne = knn.testing(testUserSet[testUserIDList[i]],UserManager, ArtistManager)
-			if favOfOne == testUserMostFavourite[testUserIDList[i]].keys()[0]:
+			testUserID = testUserIDList[i]
+			favOfOne = knn.testing(testUserSet[testUserID], UserManager, ArtistManager, RemoveListened)
+			realfavOfOne = UserManager[testUserID].getMostFav().keys()[0]
+			if favOfOne == realfavOfOne:
 				theSameNum += 1
-			if testUserSet[testUserIDList[i]].ArtistList.has_key(favOfOne):
+			if testUserSet[testUserID].ArtistList.has_key(favOfOne):
 				inListenNum += 1
-			UserManager[testUserIDList[i]]=testUserSet[testUserIDList[i]]
-			key = testUserMostFavourite[testUserIDList[i]].keys()[0]
-			value = testUserMostFavourite[testUserIDList[i]].values()[0]
-			#UserManager[testUserIDList[i]].insertArt(key,value)
-			print testUserIDList[0], favOfOne, key
+			# recovery modified TrainUserManager
+			TrainUserManager[testUserID]=testUserSet[testUserID]
 
 			# print testUserSet[testUserIDList[i]]
 			# print testUserMostFavourite[testUserIDList[i]], favOfOne, testUserSet[testUserIDList[i]].ArtistList.pop(favOfOne, "cannot match any one")
-		print str(user)
+			print str(user), theSameNum, inListenNum, favOfOne
 
-	print theSameNum/len(UserManager)
-	print inListenNum/len(UserManager)
+	print 1.0*theSameNum/len(UserManager)
+	print 1.0*inListenNum/len(UserManager)
 
 	# print favOfOne
 

@@ -46,7 +46,7 @@ def splitTrainSet(userManager, percentage):
 
 if __name__ == "__main__":
 	# filepath = "test-data/"
-	filepath = "lastfm-API-data-2/"
+	filepath = "lastfm-API-data/"
 	filelist = ["Artist.data", "ArtistTags.data", "UserArtist.data", "Tag.data", "Tag.data","TestUser.data","User.data"]
 	data = readFile(filepath, filelist)
 

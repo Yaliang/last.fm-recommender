@@ -55,17 +55,17 @@
                     <ul class="nav nav-sidebar">
                         <li id='build-btn' class="active"><a href="#" onclick="displayBuildUser()">Build Mock User <span class="sr-only">(current)</span></a></li>
                         <!-- <li><a href="#">Reports</a></li> -->
-                        <li id='ana-btn'><a onclick="displayKNNAna()">Analytics</a></li>
-                        <li><a href="#">Export</a></li>
-                    </ul>
-                    <!-- <ul class="nav nav-sidebar">
-                        <li><a href="">Nav item</a></li>
-                        <li><a href="">Nav item again</a></li>
-                        <li><a href="">One more nav</a></li>
-                        <li><a href="">Another nav item</a></li>
-                        <li><a href="">More navigation</a></li>
+                        <li id='ana-btn'><a href="#" onclick="displayKNNAna()">Analytics</a></li>
+                        <li><a target="_blank" href="https://github.com/Yaliang/last.fm-recommender">View on Github</a></li>
                     </ul>
                     <ul class="nav nav-sidebar">
+                        <li><a href="#" onclick="displayHelper()">Help</a></li>
+                        <!-- <li><a href="">Nav item again</a></li>
+                        <li><a href="">One more nav</a></li>
+                        <li><a href="">Another nav item</a></li>
+                        <li><a href="">More navigation</a></li> -->
+                    </ul>
+                    <!-- <ul class="nav nav-sidebar">
                         <li><a href="">Nav item again</a></li>
                         <li><a href="">One more nav</a></li>
                         <li><a href="">Another nav item</a></li>
@@ -157,9 +157,9 @@
                         </table>
                     </div>
 
-                    <h2 class="sub-header" id="data-anay">Features(tag attributes)</h2>
+                    <h2 class="sub-header" style="display:none" id="data-anay">Features <small>top 10 tag attributes</small></h2>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="display:none" id="tag-table">
                         <table class="table table-striped" id="mock-user-features">
                             <thead>
                                 <tr>
@@ -173,15 +173,16 @@
                         </table>
                     </div>
 
-                    <h2 class="sub-header">Recommendation(top 10)</h2>
+                    <h2 class="sub-header" style="display:none" id="data-anay-2">Recommendation <small>top 10 artists</small></h2>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="display:none" id="rec-table">
                         <table class="table table-striped" id="mock-user-rank">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Match Weight</th>
+                                    <th>Top Tag</th>
+                                    <th>Match Rate</th>
                                 </tr>
                             </thead>
                             <tbody>
