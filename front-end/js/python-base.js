@@ -198,6 +198,7 @@ artistFolder = {
 				tagele.html(tagele.html()+" #"+artistTags[j].name)
 			}
 		}
+
 	}
 }
 
@@ -215,6 +216,7 @@ mockUser = {
 				var res = JSON.parse(req.responseText)
 				var artistID = res['artistID']
 				artistFolder.askKNNResult(artistID)
+				self.fillAnalytTables(res)
 				ele = self.request.pop()
 				$("#knn-progress").children(".progress-bar").css('width',"100%").attr('aria-valuenow', "100")
 				$("#knn-progress").children(".progress-bar").children(".sr-only").html("100% Complete")
@@ -236,9 +238,14 @@ mockUser = {
 			this.artists[artistID] = {}
 			this.artists[artistID]['weight'] = 1
 			this.fillTableRecord(artistID)
-			artistFolder.fillNewArtist(eleID)
+			if (eleID != 0) {
+				artistFolder.fillNewArtist(eleID)
+			} else {
+				mockUser.hideResult()
+			}
 		}
 		$('#run-knn').popover('destroy')
+
 	},
 	removeArtist: function(artistID) {
 		$("#"+artistID.toString()+"tr").animate({
@@ -269,6 +276,30 @@ mockUser = {
 		})
 		this.artists[artistID]['slider'] = artistSlider
 	},
+	fillAnalytTables: function(res) {
+		// console.log(res)
+		var tagList = res['tags']
+		// console.log(tagList)
+		var artistsList = res['artists']
+		$("#mock-user-features").children("tbody").html("")
+		for (var i=0; i<tagList.length; i++) {
+			var tagobj = tagList[i]
+			var tagID = tagobj['id']
+			var tagName = tagobj['name']
+			var tagWeight = tagobj['match']
+			var newTab = "<tr><td>"+tagID.toString()+"</td><td>"+tagName.toString()+"</td><td>"+tagWeight.toString()+"</td>"
+			$("#mock-user-features").children("tbody").append(newTab)
+		}
+		$("#mock-user-rank").children("tbody").html("")
+		for (var i=0; i<artistsList.length; i++) {
+			var artistObj = artistsList[i]
+			var artistID = artistObj['id']
+			var artistName = artistObj['name']
+			var artistWeight = artistObj['match']
+			var newTab = "<tr><td>"+artistID.toString()+"</td><td>"+artistName.toString()+"</td><td>"+artistWeight.toString()+"</td>"
+			$("#mock-user-rank").children("tbody").append(newTab)
+		}
+	},
 	runKNN: function() {
 		var url = "http://python-base.herokuapp.com/mockUserWithArtist/";
 		var artists = []
@@ -276,6 +307,7 @@ mockUser = {
 		// console.log(artistList)
 		var artistLen = artistList.length
 		if (artistLen == 0) {
+			$('#run-knn').popover('destroy')
 			$('#run-knn').popover({
 				title: "Message", 
 				content: "Please add at least one artist to listen record.",
@@ -298,7 +330,7 @@ mockUser = {
 		console.log(artists)
 		var data = {'artists':artists};
 		var connect = $.post(url, data, function(ret){
-			console.log(ret);
+			// console.log(ret);
 		}, "json");
 		var newRequest = {}
 		newRequest['connect'] = connect
@@ -323,12 +355,21 @@ mockUser = {
 
 	},
 	hideResult: function() {
+		var imgele;
 		for (var i=1; i<=4; i++) {
 			$("#artist-"+i.toString()).animate({
 				width:["toggle", "swing"],
 				height: ["toggle", "swing"],
 				opacity: "toggle"
-			}, 300)
+			}, 300, function() {
+				imgele = $(this).children('img')
+				console.log(this)
+				imgele.width(200)
+				// console.log($(this).width())
+				imgele.height(imgele.width())
+			})
+			
+
 		}
 		$("#artist-0").animate({
 			width:["toggle", "swing"],
@@ -397,10 +438,89 @@ function refreshDashBoardArtists() {
 	}
 }
 
+function displayHelper() {
+	$('#run-knn').popover({
+		container: 'body',
+		title: "Step 4", 
+		content: "Execute k nearest neighbor algorithm.",
+		trigger: "hover",
+		placement: "left"
+	}); 
+	$('#run-knn').popover('show')
+	$('#refresh-artists').popover({
+		container: 'body',
+		title: "Step 1", 
+		content: "Randomly refresh the artists display bellow.",
+		trigger: "hover",
+		placement: "bottom"
+	}); 
+	$('#refresh-artists').popover('show')
+	$('#add-artist-btn').popover({
+		container: 'body',
+		title: "Step 2", 
+		content: "Add this artist to mock user listen record.",
+		trigger: "hover",
+		placement: "left"
+	}); 
+	$('#add-artist-btn').popover('show')
+	$('#hide-artist-btn').popover({
+		container: 'body',
+		title: "Step 2", 
+		content: "Load a new artist.",
+		trigger: "hover",
+		placement: "bottom"
+	}); 
+	$('#hide-artist-btn').popover('show')
+
+	var newSlider = "<input id='art-1' data-slider-id='art-1-Slider' type='text' data-slider-min='0' data-slider-max='1' data-slider-step='0.01' data-slider-tooltip='hide' data-slider-value='0.8'/>"
+	var removeBtn = "<button type='button' class='btn btn-default btn-xs' id='remove-art-btn' aria-label='remove artist' onclick='$(\"#art-1-tr\").remove'><span class='glyphicon glyphicon-remove-circle' aria-hidden='true'></span>"
+	var newTab = "<tr id='art-1-tr'><td>-1</td><td>Taylor Swift</td><td>#pop</td><td>"+newSlider+"</td><td>"+removeBtn+"</td></tr>"
+	var mockTable = $("#mock-user-table").children("tbody")
+	mockTable.prepend(newTab)
+	$('#art-1').slider();
+
+	$('#art-1-Slider').popover({
+		container: 'body',
+		title: "Step 3", 
+		content: "Adjust listen record weight.",
+		trigger: "hover",
+		placement: "bottom"
+	}); 
+	$('#art-1-Slider').popover('show')
+
+	$('#remove-art-btn').popover({
+		container: 'body',
+		title: "Step 3", 
+		content: "Remove this artist.",
+		trigger: "hover",
+		placement: "top"
+	}); 
+	$('#remove-art-btn').popover('show')
+
+	setTimeout(function(){
+		$('#run-knn').popover('destroy')
+		$('#refresh-artists').popover('destroy')
+		$('#add-artist-btn').popover('destroy')
+		$('#hide-artist-btn').popover('destroy')
+		$('#art-1-Slider').popover('destroy')
+		$('#remove-art-btn').popover('destroy')
+		$('#art-1-tr').remove()
+	}, 5000)
+}
+
+function displayBuildUser() {
+	$('#build-btn').addClass('active')
+	$('#ana-btn').removeClass('active')
+}
+
+function displayKNNAna() {
+	$('#build-btn').removeClass('active')
+	$('#ana-btn').addClass('active')
+	var toTop = $('#data-anay').position().top
+	$('body').animate({
+		scrollTop: toTop
+	},"slow")
+}
+
 artistFolder.init()
 mockUser.init()
-$('#ex1').slider({
-	formatter: function(value) {
-		return 'Current value: ' + value;
-	}
-});
