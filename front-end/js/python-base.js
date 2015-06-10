@@ -285,7 +285,7 @@ mockUser = {
 		for (var i=0; i<tagList.length; i++) {
 			var tagobj = tagList[i]
 			var tagID = tagobj['id']
-			var tagName = tagobj['name']
+			var tagName = "#"+tagobj['name']
 			var tagWeight = tagobj['match']
 			var newTab = "<tr><td>"+tagID.toString()+"</td><td>"+tagName.toString()+"</td><td>"+tagWeight.toString()+"</td>"
 			$("#mock-user-features").children("tbody").append(newTab)
@@ -296,7 +296,12 @@ mockUser = {
 			var artistID = artistObj['id']
 			var artistName = artistObj['name']
 			var artistWeight = artistObj['match']
-			var newTab = "<tr><td>"+artistID.toString()+"</td><td>"+artistName.toString()+"</td><td>"+artistWeight.toString()+"</td>"
+			var toptag = artistObj['tag']
+			var toptagName = artistObj['tagName']
+			if (toptagName.length > 0) {
+				toptagName = "#"+toptagName
+			}
+			var newTab = "<tr><td>"+artistID.toString()+"</td><td>"+artistName.toString()+"</td><td>"+toptagName+"</td><td>"+artistWeight.toString()+"</td>"
 			$("#mock-user-rank").children("tbody").append(newTab)
 		}
 	},
@@ -316,6 +321,7 @@ mockUser = {
 			$('#run-knn').popover('show')
 			return
 		}
+		$('#ana-btn').popover('destroy')
 		this.resultLoading()
 		for (var i=0; i<artistLen; i++ ) {
 			artistID = artistList[i]
@@ -380,6 +386,7 @@ mockUser = {
 		$("#run-knn").show()
 		$("#back-building").hide()
 		$("#result-title").hide()
+		displayBuildUser()
 	}
 }
 
@@ -511,11 +518,33 @@ function displayHelper() {
 function displayBuildUser() {
 	$('#build-btn').addClass('active')
 	$('#ana-btn').removeClass('active')
+	$('#data-anay').hide()
+	$('#data-anay-2').hide()
+	$('#tag-table').hide()
+	$('#rec-table').hide()
+	$('#ana-btn').popover('destroy')
 }
 
 function displayKNNAna() {
+	var artistList = Object.keys(mockUser.artists)
+	// console.log(artistList)
+	var artistLen = artistList.length
+	if (artistLen == 0) {
+		$('#ana-btn').popover({
+			container: "body",
+			title: "Message", 
+			content: "Please run recommender before viewing analytics data.",
+			trigger: "hover",
+		}); 
+		$('#ana-btn').popover('show')
+		return
+	}
 	$('#build-btn').removeClass('active')
 	$('#ana-btn').addClass('active')
+	$('#data-anay').show()
+	$('#data-anay-2').show()
+	$('#tag-table').show()
+	$('#rec-table').show()
 	var toTop = $('#data-anay').position().top
 	$('body').animate({
 		scrollTop: toTop
@@ -524,3 +553,7 @@ function displayKNNAna() {
 
 artistFolder.init()
 mockUser.init()
+if (typeof(localStorage.first) == "undefined") {
+	displayHelper()
+	localStorage.first = 'done'
+}

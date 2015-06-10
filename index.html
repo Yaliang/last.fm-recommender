@@ -49,8 +49,9 @@
                                         <li><a href="http://getbootstrap.com/examples/carousel/#">Something else here</a></li> -->
                                         <!-- <li class="divider"></li> -->
                                         <li class="dropdown-header">External link</li>
-                                        <li><a href="https://docs.google.com/document/d/1CbvFeWHMl38GEpzkfz7s0pWzpm0WP5-2W9TQEPGts4s/edit?usp=sharing">Link to proposal</a></li>
-                                        <li><a href="https://docs.google.com/document/d/1b_GtAp5VtMbdGGRafoAfji1gjH-08GKgsw9j31yFrN4/edit?usp=sharing">Link to statue report</a></li>
+                                        <li><a href="./front-end/doc/Proposal.pdf">Link to proposal</a></li>
+                                        <li><a href="./front-end/doc/StatusReport.pdf">Link to status report</a></li>
+                                        <li><a href="./front-end/doc/FinalReport.pdf">Link to final report</a></li>
                                         <li><a href="http://www.cs.northwestern.edu/~ddowney/courses/349_Spring2015/">Link to course page</a></li>
                                     </ul>
                                 </li>
@@ -99,7 +100,7 @@
                         <div class="carousel-caption">
                             <h1></h1>
                             <p></p>
-                            <p><a class="btn btn-lg btn-primary" href="./Dashboard.html" role="button">Play on the Dashboard</a></p>
+                            <p><a class="btn btn-lg btn-primary" href="./Dashboard.html" role="button">Try on recommender</a></p>
                         </div>
                     </div>
                 </div>
@@ -141,7 +142,7 @@
             <div class="row featurette">
                 <div class="col-md-7 col-md-push-5">
                     <h2 class="featurette-heading">Capture your neighbors. <span class="text-muted"></span></h2>
-                    <p class="lead">K nearest neighbors are selected based on the Euler distance between you and other users in the feature space.</p>
+                    <p class="lead">K nearest neighbors are selected based on the Euclidean distance between you and other users in the feature space.</p>
                     <small>* This animation shows a test user(ID:5) is finding 30 nearest neighbors. The test user become bigger at the center since collecting more records from neighbors. The value of distance in 2D space is equal to the value of Euler distance in high-dimensional feature space in this animation. The radius of a neighbor represents the relative size of total listen number.</small>
                 </div>
                 <div class="col-md-5 col-md-pull-7">
@@ -165,8 +166,16 @@
 
             <hr class="featurette-divider">
 
-            <div class="row">
-                <div class="center-block"><a class="btn btn-lg btn-primary" href="./Dashboard.html" style="margin:auto; display:block; max-width:260px" role="button">Play on the Dashboard</a></div>
+            <div class="row featurette">
+                <div class="col-md-12 text-center">
+                    <h2 class="featurette-heading">Test out recommender on the Dashboard.<span class="text-muted"></span></h2>
+                    <p class="lead">Build your mock user. Run the recommender hosted on our python server. Test its recommendation with a lot of fun. </p>
+                    <small>* The dataset on our python server including 186479 tags labeled by 1892 users to 17632 artists. 92834 listened records are used to train the k nearest neighbors algorithm (k = 40).</small>
+                </div>
+                <div class="col-md-12" style="margin-top:40px">
+                    <a class="btn btn-lg btn-primary" href="./Dashboard.html" style="margin:auto; display:block; max-width:260px" role="button">Play on the Dashboard</a>
+                    <a class="btn btn-lg btn-default" href="./front-end/doc/FinalReport.pdf" style="margin:auto; margin-top:20px;  display:block; max-width:260px" role="button">Review Final Report</a>
+                </div>
             </div>
 
 
@@ -184,21 +193,21 @@
                     <img class="img-circle" src="./front-end/img/profile_yaliang.png" alt="Generic placeholder image" width="100" height="100">
                     <h3>Yaliang Wang</h3>
                     <p>Master Student, Computer Science, Northwestern University, Class of 2015.</br>yaliangwang2015 [at] u.northwestern.edu</p>
-                    <p><a class="btn btn-default" target="_blank" href="https://github.com/Yaliang" role="button">View on Github »</a></p>
+                    <p><a class="btn btn-default" target="_blank" href="https://www.facebook.com/wang.yaliang" role="button">View on Facebook »</a></p>
                 </div>
                 <!-- /.col-lg-4 -->
                 <div class="col-lg-4">
                     <img class="img-circle" src="./front-end/img/profile_haomin.png" alt="Generic placeholder image" width="100" height="100">
                     <h3>Haomin Zeng</h3>
-                    <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-                    <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+                    <p>Master Student, Computer Science, Northwestern University, Class of 2015.</p>
+                    <p><a class="btn btn-default" target="_blank" href="https://www.facebook.com/people/Haomin-Zeng/100008410812340" role="button">View on Facebook »</a></p>
                 </div>
                 <!-- /.col-lg-4 -->
                 <div class="col-lg-4">
                     <img class="img-circle" src="./front-end/img/profile_sisi.png" alt="Generic placeholder image" width="100" height="100">
                     <h3>Sisi Chen</h3>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+                    <p>Master Student, Computer Science, Northwestern University, Class of 2015.</p>
+                    <p><a class="btn btn-default" target="_blank" href="https://www.facebook.com/people/Cassie-Chen/100004976895468" role="button">View on Facebook »</a></p>
                 </div>
                 <!-- /.col-lg-4 -->
             </div>
@@ -219,6 +228,6 @@
         <script src="./lib/jquery-1.11.3.min.js"></script>
         <script src="./lib/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
         <script src="./lib/bootstrap-slider-master/js/bootstrap-slider.js"></script>
-        <script src="./front-end/js/python-base.js"></script>
+        <!-- <script src="./front-end/js/python-base.js"></script> -->
     </body>
 </html>
